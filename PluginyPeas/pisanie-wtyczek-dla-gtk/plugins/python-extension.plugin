@@ -1,0 +1,4 @@
+[Plugin]
+Module=python-extension
+Loader=python3
+Name=PythonExtension

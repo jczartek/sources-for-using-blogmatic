@@ -1,0 +1,3 @@
+[Plugin]
+Module=libc-extension.so
+Name=CExtension

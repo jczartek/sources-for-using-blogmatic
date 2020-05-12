@@ -1,0 +1,28 @@
+task default: [:build_library, :build_launcher, :build_vala_extension]
+
+task :clean do
+  puts "Cleaning..."
+  `rm -d *.gir *.typelib *.vapi *.so extensya.h extensya ./plugins/__pycache__/* ./plugins/__pycache__ ./plugins/*.so ./plugins/*.o`
+end
+
+task :build_library do
+  puts "Building libextensya..."
+  `valac -o libextensya.so --library extensya -H extensya.h  --gir Extensya-1.0.gir  -X -shared -X -fPIC --pkg libpeas-1.0 --pkg gtk+-3.0 extensya-application.vala extensya-window.vala extensya-extension.vala`
+  puts "Building TypeLib..."
+  `g-ir-compiler --shared-library libextensya Extensya-1.0.gir -o Extensya-1.0.typelib`
+end
+
+task :build_launcher do
+  puts "Building launcher..."
+  `valac -o extensya launcher.vala --vapidir . --pkg gtk+-3.0 --pkg libpeas-1.0 --pkg extensya -X -I. -X -L. -X -lextensya`
+end
+
+task :build_vala_extension do
+  puts "Building vala extension..."
+  `valac -o ./plugins/libvala-extension.so --library vala-extension ./plugins/vala-extension.vala -X -shared -X -fPIC --vapidir . --pkg libpeas-1.0 --pkg gtk+-3.0 --pkg extensya -X -I. -X -L. -X -lextensya`
+end
+
+task :build_c_extension do
+  puts "Building c extension..."
+  `gcc -o ./plugins/libc-extension.so -I. `
+end

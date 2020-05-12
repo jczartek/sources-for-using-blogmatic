@@ -1,0 +1,3 @@
+[Plugin]
+Module=vala-extension.so
+Name=ValaExtension

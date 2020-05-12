@@ -1,0 +1,13 @@
+kompilowanie biblioteki:
+valac -o libextensya.so --library extensya -H extensya.h  --gir Extensya-1.0.gir  -X -shared -X -fPIC --pkg libpeas-1.0 --pkg gtk+-3.0 extensya.vala
+g-ir-compiler --shared-library libfoo Foo-1.0.gir -o Foo-1.0.typelib
+kompilowanie programu:
+valac -o foo launcher.vala --vapidir . --pkg gtk+-3.0 --pkg foo -X -I. -X -L. -X -lextensya
+kompilowanie wtyczki napisanej w vala:
+valac -o libvala-extension.so --library vala-extension vala-extension.vala -X -shared -X -fPIC --vapidir . --pkg libpeas-1.0 --pkg gtk+-3.0 --pkg foo -X -I. -X -L. -X -lfoo
+kompilowanie wtyczki napisanej w c:
+gcc -c -Wall -fpic -o ./plugins/libc-extension.o ./plugins/c-extension.c `pkg-config --cflags gtk+-3.0` `pkg-config --cflags libpeas-1.0` -I. -L. -lextensya && gcc -shared -o ./plugins/libc-extension.so ./plugins/libc-extension.o
+
+ustawienie zmiennych środowiskoych aby uruchomić program.
+export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
+export GI_TYPELIB_PATH=.:$GI_TYPELIB_PATH
